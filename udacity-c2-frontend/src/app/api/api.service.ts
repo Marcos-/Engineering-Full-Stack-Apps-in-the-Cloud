@@ -21,12 +21,14 @@ export class ApiService {
   }
 
   handleError(error: Error) {
-    alert(error.message);
+    console.log(error.message);
   }
 
   setAuthToken(token) {
-    this.httpOptions.headers = this.httpOptions.headers.append('Authorization', `jwt ${token}`);
-    this.token = token;
+    if (!this.token) {
+      this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
+      this.token = token;
+    }
   }
 
   get(endpoint): Promise<any> {
@@ -53,8 +55,8 @@ export class ApiService {
 
   async upload(endpoint: string, file: File, payload: any): Promise<any> {
     const signed_url = (await this.get(`${endpoint}/signed-url/${file.name}`)).url;
-
     const headers = new HttpHeaders({'Content-Type': file.type});
+    console.log(headers)
     const req = new HttpRequest( 'PUT', signed_url, file,
                                   {
                                     headers: headers,

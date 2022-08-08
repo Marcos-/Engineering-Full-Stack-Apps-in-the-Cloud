@@ -33,7 +33,7 @@ router.get('/signed-url/:fileName',
     requireAuth, 
     async (req: Request, res: Response) => {
     let { fileName } = req.params;
-    const url = AWS.getPutSignedUrl("https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg");
+    const url = AWS.getPutSignedUrl(fileName);
     res.status(201).send({url: url});
 });
 
